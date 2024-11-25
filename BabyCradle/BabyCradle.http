@@ -1,0 +1,6 @@
+@BabyCradle_HostAddress = http://localhost:5103
+
+GET {{BabyCradle_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
