@@ -1,8 +1,11 @@
 
 using BabyCradle.Context;
 using BabyCradle.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BabyCradle
 {
@@ -25,8 +28,32 @@ namespace BabyCradle
                 options.UseSqlServer(connectionString);
             });
 
+            //Identity
+
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                //[authorize]
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                //verified key
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["JWT:IssuerIP"],
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:AudienceIP"],
+                    IssuerSigningKey =
+                   new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecritKey"]))
+                };
+            });
 
             var app = builder.Build();
 
