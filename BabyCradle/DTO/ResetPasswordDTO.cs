@@ -2,11 +2,17 @@
 
 namespace BabyCradle.DTO
 {
-    public class loginDto
+    public class ResetPasswordDTO
     {
+    
+        public string Code { get; set; }
+
+  
         [EmailAddress]
         public string Email { get; set; }
+
+        
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string NewPassword { get; set; }
     }
 }

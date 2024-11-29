@@ -2,9 +2,11 @@
 
 namespace BabyCradle.DTO
 {
-    public class ForgotPasswordDto
+    public class VerifyCodeDto
     {
         [EmailAddress]
         public string Email { get; set; }
+
+        public string Code { get; set; }
     }
 }

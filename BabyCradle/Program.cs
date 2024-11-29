@@ -1,8 +1,10 @@
 
 using BabyCradle.Context;
 using BabyCradle.Models;
+using BabyCradle.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -21,6 +23,9 @@ namespace BabyCradle
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddTransient<IEmailSenderRepository, EmailSenderRepository>();
+            builder.Services.AddTransient<IGenerateVerificationCodeRepo, GenerateVerificationCodeRepo>();
+            builder.Services.AddMemoryCache();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -67,6 +72,7 @@ namespace BabyCradle
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
 
             app.MapControllers();
