@@ -20,10 +20,9 @@ global using Hangfire;
 
 
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
-global using BabyCradle.Context;
-global using BabyCradle.Repository;
+
 global using Microsoft.AspNetCore.Identity.UI.Services;
-global using Microsoft.EntityFrameworkCore;
+
 global using Microsoft.IdentityModel.Tokens;
 global using System.Text;
 
