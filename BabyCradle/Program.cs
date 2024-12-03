@@ -1,9 +1,3 @@
-
-using BabyCradle.Context;
-using BabyCradle.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-
 namespace BabyCradle
 {
     public class Program
@@ -19,6 +13,16 @@ namespace BabyCradle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            //__________________________________________________________________
+            builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("Local")));
+            builder.Services.AddHangfireServer();
+            builder.Services.AddAutoMapper(typeof(AutoMapperConfigProfile)); 
+            builder.Services.AddScoped<INoteRepository,NoteRepository>();
+            builder.Services.AddScoped<NoteService>();
+            builder.Services.AddScoped<SendNotificationService>();
+            //builder.Services.AddHostedService<NotificationService>();
+            //builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 var connectionString = builder.Configuration.GetConnectionString("Local");
@@ -27,6 +31,7 @@ namespace BabyCradle
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddControllers();
 
             var app = builder.Build();
 
@@ -41,6 +46,7 @@ namespace BabyCradle
 
             app.UseAuthorization();
 
+            app.UseHangfireDashboard("/dashboard");
 
             app.MapControllers();
 
