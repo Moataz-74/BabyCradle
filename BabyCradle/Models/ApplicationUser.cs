@@ -1,6 +1,4 @@
-﻿
-
-namespace BabyCradle.Models
+﻿namespace BabyCradle.Models
 {
     public class ApplicationUser:IdentityUser
     {

@@ -1,8 +1,8 @@
 ﻿namespace BabyCradle.Model
 {
-    public class Medicine:Medical
+    public class Medicine:NotificationItem, INotifiable
     {
-       public const string NotificationMessage = "not forget Medicine time after two minutes";
-       
+        public string MedicineName { get; set; } = string.Empty; 
+
     }
 }

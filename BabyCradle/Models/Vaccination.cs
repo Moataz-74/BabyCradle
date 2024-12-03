@@ -1,8 +1,9 @@
 ﻿namespace BabyCradle.Model
 {
-    public class Vaccination :Medical
+    public class Vaccination :NotificationItem, INotifiable 
     {
-        public const string NotificationMessage = "not forget Vaccination times ";
-       
+        public string VaccineName { get; set; } = string.Empty;
+
+
     }
 }

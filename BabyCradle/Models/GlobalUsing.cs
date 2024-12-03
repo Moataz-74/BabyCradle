@@ -2,10 +2,4 @@
 global using System.ComponentModel.DataAnnotations.Schema;
 global using BabyCradle.Models;
 global using BabyCradle.Model;
-global using Microsoft.AspNetCore.Authentication.JwtBearer;
-global using BabyCradle.Context;
-global using BabyCradle.Repository;
-global using Microsoft.AspNetCore.Identity.UI.Services;
-global using Microsoft.EntityFrameworkCore;
-global using Microsoft.IdentityModel.Tokens;
-global using System.Text;
+
