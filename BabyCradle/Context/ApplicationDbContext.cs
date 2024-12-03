@@ -1,10 +1,4 @@
-﻿using BabyCradle.Model;
-using BabyCradle.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-namespace BabyCradle.Context
+﻿namespace BabyCradle.Context
 {
     public class ApplicationDbContext :IdentityDbContext<ApplicationUser>
     {
@@ -20,6 +14,8 @@ namespace BabyCradle.Context
         public DbSet<Medicine> Medicines { get; set; }
         public DbSet<spO2> spO2_readings { get; set; }
         public DbSet<Temprature> Temprature_readings { get; set; }
-        public DbSet<Vaccination> Vaccinations { get; set; }    
+        public DbSet<Vaccination> Vaccinations { get; set; }
+        public DbSet<Note> Notes { get; set; }  
+
     }
 }

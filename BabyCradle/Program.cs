@@ -1,6 +1,4 @@
 
-
-
 namespace BabyCradle
 {
     public class Program
@@ -19,6 +17,16 @@ namespace BabyCradle
             builder.Services.AddTransient<IGenerateVerificationCodeRepo, GenerateVerificationCodeRepo>();
             builder.Services.AddMemoryCache();
 
+            //__________________________________________________________________
+            builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("Local")));
+            builder.Services.AddHangfireServer();
+            builder.Services.AddAutoMapper(typeof(AutoMapperConfigProfile)); 
+            builder.Services.AddScoped<INoteRepository,NoteRepository>();
+            builder.Services.AddScoped<NoteService>();
+            builder.Services.AddScoped<SendNotificationService>();
+            //builder.Services.AddHostedService<NotificationService>();
+            //builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 var connectionString = builder.Configuration.GetConnectionString("Local");
@@ -29,6 +37,7 @@ namespace BabyCradle
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddControllers();
 
             builder.Services.AddAuthentication(options =>
             {
@@ -66,6 +75,7 @@ namespace BabyCradle
             app.UseAuthorization();
             app.UseAuthentication();
 
+            app.UseHangfireDashboard("/dashboard");
 
             app.MapControllers();
 
