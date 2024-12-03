@@ -1,13 +1,5 @@
 
-using BabyCradle.Context;
-using BabyCradle.Models;
-using BabyCradle.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+
 
 namespace BabyCradle
 {
