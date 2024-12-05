@@ -1,3 +1,4 @@
+﻿using Microsoft.OpenApi.Models;
 
 namespace BabyCradle
 {
@@ -12,7 +13,41 @@ namespace BabyCradle
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(swagger =>
+            {
+                //This�is�to�generate�the�Default�UI�of�Swagger�Documentation����
+                swagger.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "ASP.NET�8�Web�API",
+                    Description = " BabyCradle"
+                });
+                //�To�Enable�authorization�using�Swagger�(JWT)����
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter�'Bearer'�[space]�and�then�your�valid�token�in�the�text�input�below.\r\n\r\nExample:�\"Bearer�eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                    new OpenApiSecurityScheme
+                    {
+                    Reference = new OpenApiReference
+                    {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                    }
+                    },
+                    new string[] {}
+                    }
+                    });
+            });
             builder.Services.AddTransient<IEmailSenderRepository, EmailSenderRepository>();
             builder.Services.AddTransient<IGenerateVerificationCodeRepo, GenerateVerificationCodeRepo>();
             builder.Services.AddMemoryCache();
@@ -25,7 +60,7 @@ namespace BabyCradle
             builder.Services.AddScoped<NoteService>();
             builder.Services.AddScoped<SendNotificationService>();
             //builder.Services.AddHostedService<NotificationService>();
-            //builder.Services.AddHttpContextAccessor();
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -37,7 +72,7 @@ namespace BabyCradle
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
-            builder.Services.AddControllers();
+            //builder.Services.AddControllers();
 
             builder.Services.AddAuthentication(options =>
             {
@@ -56,10 +91,13 @@ namespace BabyCradle
                     ValidIssuer = builder.Configuration["JWT:IssuerIP"],
                     ValidateAudience = true,
                     ValidAudience = builder.Configuration["JWT:AudienceIP"],
+                    //ValidateLifetime = true,
                     IssuerSigningKey =
                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecritKey"]))
                 };
             });
+
+            builder.Services.AddAuthorization();
 
             var app = builder.Build();
 
@@ -73,7 +111,7 @@ namespace BabyCradle
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
             app.UseHangfireDashboard("/dashboard");
 

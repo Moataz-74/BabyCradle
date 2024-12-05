@@ -16,6 +16,7 @@ namespace BabyCradle.Controllers
             this.noteRepository = noteRepository;
             
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddNote(AddNoteDTO noteDTO)
         {
@@ -27,7 +28,8 @@ namespace BabyCradle.Controllers
             }
             return BadRequest("invalid input");
         }
-        [HttpGet]
+        [Authorize,HttpGet]
+        
         public async Task<ActionResult<IEnumerable<Note>>> GetAllNotes()
         {
             var notes = await noteRepository.GetAllNotes();

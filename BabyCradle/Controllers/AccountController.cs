@@ -1,35 +1,22 @@
-﻿using BabyCradle.DTO;
-using BabyCradle.Repository;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-
-namespace BabyCradle.Controllers
+﻿namespace BabyCradle.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
-        IEmailSenderRepository emailSender;
-
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IConfiguration config;
-        private readonly IMemoryCache _cache;
-        IGenerateVerificationCodeRepo generatecode;
+        //private readonly IMemoryCache _cache;
+        //IGenerateVerificationCodeRepo generatecode;
 
 
-        public AccountController(UserManager<ApplicationUser> UserManager, IConfiguration config, IEmailSenderRepository emailSender, IMemoryCache cache, IGenerateVerificationCodeRepo generatecode)
+        public AccountController(UserManager<ApplicationUser> UserManager, IConfiguration config /* IEmailSenderRepository emailSender*/ )/*, IMemoryCache cache, IGenerateVerificationCodeRepo generatecode)*/
         {
             userManager = UserManager;
             this.config = config;
-            this.emailSender = emailSender;
-            _cache = cache;
-            this.generatecode = generatecode;
+            //this.emailSender = emailSender;
+            //_cache = cache;
+            //this.generatecode = generatecode;
         }
 
         [HttpPost("Register")]
@@ -66,7 +53,7 @@ namespace BabyCradle.Controllers
             {
                 //check
 
-                ApplicationUser userfromDb =
+               var userfromDb =
                         await userManager.FindByEmailAsync(userfromReq.Email);
 
                 if (userfromDb != null)
@@ -101,7 +88,7 @@ namespace BabyCradle.Controllers
                            //header
                            audience: config["JWT:AudienceIP"],         //angular
                              issuer: config["JWT:IssuerIP"],
-                             expires: DateTime.Now.AddHours(1),
+                             expires: DateTime.Now.AddHours(200),
 
                             //payload
                             claims: UserClaims,
@@ -116,7 +103,7 @@ namespace BabyCradle.Controllers
                         {
 
                             token = new JwtSecurityTokenHandler().WriteToken(token),   //transform token from 3 blocks to strings
-                            expiration = DateTime.Now.AddHours(1)
+                            expiration = DateTime.Now.AddHours(200)
                         });
                     }
                 }
@@ -126,81 +113,81 @@ namespace BabyCradle.Controllers
             return BadRequest(ModelState);
         }
 
-        //ForgetPassword
-        [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        ////ForgetPassword
+        //[HttpPost("forgot-password")]
+        //public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            var user = await userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                // Do not reveal whether the email exists
-                return Ok(new { Message = "If the email is registered, a code will be sent." });
-            }
+        //    var user = await userManager.FindByEmailAsync(model.Email);
+        //    if (user == null)
+        //    {
+        //        // Do not reveal whether the email exists
+        //        return Ok(new { Message = "If the email is registered, a code will be sent." });
+        //    }
 
-            // Generate a 6-digit code
-            var code = generatecode.GenerateVerificationCode();
+        //    // Generate a 6-digit code
+        //    var code = generatecode.GenerateVerificationCode();
 
-            // Store the code in memory cache with expiration (e.g., 5 minutes)
-            _cache.Set(model.Email, code, TimeSpan.FromMinutes(5));
+        //    // Store the code in memory cache with expiration (e.g., 5 minutes)
+        //    _cache.Set(model.Email, code, TimeSpan.FromMinutes(5));
 
-            // Send the code via email
-            var subject = "Your Password Reset Code";
-            var message = $"Your password reset code is: <strong>{code}</strong>";
-            await emailSender.SendEmailAsync(model.Email, subject, message);
+        //    // Send the code via email
+        //    var subject = "Your Password Reset Code";
+        //    var message = $"Your password reset code is: <strong>{code}</strong>";
+        //    await emailSender.SendEmailAsync(model.Email, subject, message);
 
-            return Ok(new { Message = "If the email is registered, a code will be sent." });
-        }
+        //    return Ok(new { Message = "If the email is registered, a code will be sent." });
+        //}
 
-        //Verify-code
+        ////Verify-code
 
-        [HttpPost("verify-code")]
-        public IActionResult VerifyCode([FromBody] VerifyCodeDto model)
-        {
-            if (!_cache.TryGetValue(model.Email, out string storedCode))
-            {
-                return BadRequest(new { Message = "Code expired or invalid." });
-            }
+        //[HttpPost("verify-code")]
+        //public IActionResult VerifyCode([FromBody] VerifyCodeDto model)
+        //{
+        //    if (!_cache.TryGetValue(model.Email, out string storedCode))
+        //    {
+        //        return BadRequest(new { Message = "Code expired or invalid." });
+        //    }
 
-            if (storedCode != model.Code)
-            {
-                return BadRequest(new { Message = "Invalid code." });
-            }
+        //    if (storedCode != model.Code)
+        //    {
+        //        return BadRequest(new { Message = "Invalid code." });
+        //    }
 
-            return Ok(new { Message = "Code verified successfully." });
-        }
+        //    return Ok(new { Message = "Code verified successfully." });
+        //}
 
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
-        {
-            if (!_cache.TryGetValue(model.Email, out string storedCode))
-            {
-                return BadRequest(new { Message = "Code expired or invalid." });
-            }
+        //[HttpPost("reset-password")]
+        //public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO model)
+        //{
+        //    if (!_cache.TryGetValue(model.Email, out string storedCode))
+        //    {
+        //        return BadRequest(new { Message = "Code expired or invalid." });
+        //    }
 
-            if (storedCode != model.Code)
-            {
-                return BadRequest(new { Message = "Invalid code." });
-            }
+        //    if (storedCode != model.Code)
+        //    {
+        //        return BadRequest(new { Message = "Invalid code." });
+        //    }
 
-            var user = await userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                return BadRequest(new { Message = "Invalid request." });
-            }
+        //    var user = await userManager.FindByEmailAsync(model.Email);
+        //    if (user == null)
+        //    {
+        //        return BadRequest(new { Message = "Invalid request." });
+        //    }
 
-            var result = await userManager.ResetPasswordAsync(user, await userManager.GeneratePasswordResetTokenAsync(user), model.NewPassword);
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
+        //    var result = await userManager.ResetPasswordAsync(user, await userManager.GeneratePasswordResetTokenAsync(user), model.NewPassword);
+        //    if (!result.Succeeded)
+        //    {
+        //        return BadRequest(result.Errors);
+        //    }
 
-            return Ok(new { Message = "Password reset successfully." });
-        }
+        //    return Ok(new { Message = "Password reset successfully." });
+        //}
     }
 }
 

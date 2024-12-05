@@ -5,17 +5,33 @@
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly SendNotificationService notificationService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public NoteRepository(ApplicationDbContext context , IMapper mapper , SendNotificationService notificationService)
+        public NoteRepository(ApplicationDbContext context , IMapper mapper , SendNotificationService notificationService , IHttpContextAccessor httpContextAccessor )
         {
             this.context = context;
             this.mapper = mapper;
             this.notificationService = notificationService;
+            this.httpContextAccessor = httpContextAccessor;
         }
+
+        
         public async Task AddNote(AddNoteDTO noteDTO)
         {
             var note = new Note();
+            
             mapper.Map(noteDTO, note);
+            // الجزء ده عشان اعرفه خاصة ب انهي طفل
+            var user = httpContextAccessor.HttpContext?.User;
+            var userId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var child = await context.Children.Where(c=>c.UserId == userId).SingleOrDefaultAsync();
+            if (child != null)
+            {
+                var childId = child.Id;
+                note.ChildId = childId;
+            }
+            
+
             var duration = note.NotificationTime - DateTime.Now;
             note.NotificationTime = Time.ConvertTimeInEgyptToUTC(noteDTO.NotificationTime);
             BackgroundJob.Schedule(() => notificationService.SendNotification(note), duration);

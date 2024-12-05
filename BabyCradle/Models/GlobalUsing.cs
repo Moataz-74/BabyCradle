@@ -2,7 +2,6 @@
 global using System.ComponentModel.DataAnnotations.Schema;
 global using BabyCradle.Models;
 global using BabyCradle.Model;
-
 global using BabyCradle.Context;
 global using Microsoft.EntityFrameworkCore;
 global using BabyCradle.DTO;
@@ -16,13 +15,14 @@ global using System.ComponentModel.DataAnnotations;
 global using BabyCradle.CustomAttribute;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using Hangfire;
-
-
-
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-global using Microsoft.AspNetCore.Identity.UI.Services;
-
 global using Microsoft.IdentityModel.Tokens;
 global using System.Text;
+global using Microsoft.AspNetCore.Authorization;
+global using System.Security.Claims;
+global using Microsoft.Extensions.Caching.Memory;
+global using System.IdentityModel.Tokens.Jwt;
+
+
+
 
