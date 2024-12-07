@@ -6,6 +6,7 @@
         {
             CreateMap<AddNoteDTO, Note>();
             CreateMap<EditNoteDTO, Note>();
+            CreateMap<AddChildDTO, Child>();
 
         }
     }

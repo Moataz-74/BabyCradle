@@ -3,11 +3,11 @@
     public interface INotifiable
     {
         public int Id { get; set; }
-        public string Title { get; set; }
+       
         public string Content { get; set; } 
 
         [FutureDate]
-        public DateTime NotificationTime { get; set; }
+        public DateTime NotificationTime { get; set; } 
 
         [ForeignKey("Child")]
         public int ChildId { get; set; }

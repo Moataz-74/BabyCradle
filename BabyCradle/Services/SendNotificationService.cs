@@ -5,7 +5,7 @@
       
         public Task SendNotification(NotificationItem notifiable )
         {
-            Console.WriteLine($"{notifiable.Title} At {DateTime.Now}");
+            Console.WriteLine($"{notifiable.Content} At {DateTime.Now}");
             
             return Task.CompletedTask;
         }

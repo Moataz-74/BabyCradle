@@ -28,6 +28,7 @@ namespace BabyCradle.Controllers
             }
             return BadRequest("invalid input");
         }
+
         [Authorize,HttpGet]
         
         public async Task<ActionResult<IEnumerable<Note>>> GetAllNotes()
@@ -35,6 +36,8 @@ namespace BabyCradle.Controllers
             var notes = await noteRepository.GetAllNotes();
             return notes.ToList();
         }
+
+        [Authorize]
         [HttpPut("EditNote/{id}")]
         public async Task<IActionResult> EditNote(int id ,EditNoteDTO editNoteDTO)
         {
@@ -45,6 +48,7 @@ namespace BabyCradle.Controllers
             }
             return BadRequest();
         }
+        [Authorize]
         [HttpDelete("DeleteNote/{id}")]
         public async Task<IActionResult> DeleteNote(int id)
         {

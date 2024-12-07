@@ -48,8 +48,7 @@ namespace BabyCradle
                     }
                     });
             });
-            builder.Services.AddTransient<IEmailSenderRepository, EmailSenderRepository>();
-            builder.Services.AddTransient<IGenerateVerificationCodeRepo, GenerateVerificationCodeRepo>();
+
             builder.Services.AddMemoryCache();
 
             //__________________________________________________________________
@@ -58,6 +57,9 @@ namespace BabyCradle
             builder.Services.AddAutoMapper(typeof(AutoMapperConfigProfile)); 
             builder.Services.AddScoped<INoteRepository,NoteRepository>();
             builder.Services.AddScoped<NoteService>();
+            builder.Services.AddScoped<PresentUserService>();
+            builder.Services.AddScoped<IChildRepository,ChildRepository>();
+            builder.Services.AddScoped<ChildService>();
             builder.Services.AddScoped<SendNotificationService>();
             //builder.Services.AddHostedService<NotificationService>();
             builder.Services.AddHttpContextAccessor();

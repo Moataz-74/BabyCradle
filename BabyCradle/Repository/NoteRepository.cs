@@ -5,14 +5,16 @@
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly SendNotificationService notificationService;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly PresentUserService presentUser;
+       
 
-        public NoteRepository(ApplicationDbContext context , IMapper mapper , SendNotificationService notificationService , IHttpContextAccessor httpContextAccessor )
+        public NoteRepository(ApplicationDbContext context , IMapper mapper , SendNotificationService notificationService ,PresentUserService presentUser)
         {
             this.context = context;
             this.mapper = mapper;
             this.notificationService = notificationService;
-            this.httpContextAccessor = httpContextAccessor;
+            this.presentUser = presentUser;
+            
         }
 
         
@@ -22,12 +24,9 @@
             
             mapper.Map(noteDTO, note);
             // الجزء ده عشان اعرفه خاصة ب انهي طفل
-            var user = httpContextAccessor.HttpContext?.User;
-            var userId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var child = await context.Children.Where(c=>c.UserId == userId).SingleOrDefaultAsync();
-            if (child != null)
+           var childId = presentUser.GetIdForPresentChild();
+            if (childId != 0)
             {
-                var childId = child.Id;
                 note.ChildId = childId;
             }
             
