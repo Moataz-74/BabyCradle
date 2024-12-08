@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BabyCradle.Controllers
+﻿namespace BabyCradle.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -132,8 +132,8 @@ namespace BabyCradle.Migrations
                     b.Property<DateTime>("NotificationTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeSpan?>("RemainingTime")
-                        .HasColumnType("time");
+                    b.Property<long?>("RemainingTime")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -320,6 +320,95 @@ namespace BabyCradle.Migrations
                     b.HasIndex("ChildId");
 
                     b.ToTable("Temprature_readings");
+                });
+
+            modelBuilder.Entity("BabyCradle.Models.VaccinationTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Information")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("IntervalAfterBirth")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("VaccineName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VaccinationTemplates");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Information = "Protects against Hepatitis B. First dose is given within 24 hours of birth.",
+                            IntervalAfterBirth = 864000000000L,
+                            VaccineName = "Hepatitis B Vaccine (HBV)"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Information = "Protects against Diphtheria, Tetanus, and Pertussis.",
+                            IntervalAfterBirth = 51840000000000L,
+                            VaccineName = "DTaP (Diphtheria, Tetanus, Pertussis)"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Information = "Protects against Polio.",
+                            IntervalAfterBirth = 51840000000000L,
+                            VaccineName = "IPV (Inactivated Polio Vaccine)"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Information = "Protects against Haemophilus influenzae infections.",
+                            IntervalAfterBirth = 51840000000000L,
+                            VaccineName = "Hib (Haemophilus Influenzae Type B)"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Information = "Protects against pneumococcal infections.",
+                            IntervalAfterBirth = 51840000000000L,
+                            VaccineName = "PCV (Pneumococcal Conjugate Vaccine)"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Information = "Protects against Rotavirus.",
+                            IntervalAfterBirth = 51840000000000L,
+                            VaccineName = "Rotavirus Vaccine"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Information = "Protects against Measles. First dose is given at 9 months.",
+                            IntervalAfterBirth = 233280000000000L,
+                            VaccineName = "Measles Vaccine"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Information = "Protects against Measles, Mumps, and Rubella.",
+                            IntervalAfterBirth = 315360000000000L,
+                            VaccineName = "MMR (Measles, Mumps, Rubella)"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Information = "Protects against Hepatitis A.",
+                            IntervalAfterBirth = 315360000000000L,
+                            VaccineName = "Hepatitis A Vaccine"
+                        });
                 });
 
             modelBuilder.Entity("BabyCradle.Models.spO2", b =>

@@ -6,6 +6,7 @@
 
         public string Title { get; set; } = "Time for Your Baby Vaccination!";
 
+        [Column(TypeName = "bigint")]
         public TimeSpan? RemainingTime { get; set; }      
 
 

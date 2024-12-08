@@ -1,6 +1,4 @@
-﻿using BabyCradle.Models;
-
-namespace BabyCradle.Controllers
+﻿namespace BabyCradle.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

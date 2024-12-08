@@ -1,6 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
-
-namespace BabyCradle
+﻿namespace BabyCradle
 {
     public class Program
     {
@@ -60,6 +58,8 @@ namespace BabyCradle
             builder.Services.AddScoped<PresentUserService>();
             builder.Services.AddScoped<IChildRepository,ChildRepository>();
             builder.Services.AddScoped<ChildService>();
+            builder.Services.AddScoped<VaccinationService>();
+            builder.Services.AddScoped<IVaccinationRepository,VaccinationRepository>();
             builder.Services.AddScoped<SendNotificationService>();
             //builder.Services.AddHostedService<NotificationService>();
             builder.Services.AddHttpContextAccessor();

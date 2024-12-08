@@ -53,7 +53,8 @@
 
         public async Task<IEnumerable<Note>> GetAllNotes()
         {
-            var notes = await context.Notes.AsNoTracking().ToListAsync();
+            var childId = presentUser.GetIdForPresentChild();
+            var notes = await context.Notes.AsNoTracking().Where(n=>n.ChildId== childId).ToListAsync();
             return notes;
         }
         public async Task<bool> NoteExistsAsync(int id)

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace BabyCradle.Services
+﻿namespace BabyCradle.Services
 {
     public class PresentUserService
     {

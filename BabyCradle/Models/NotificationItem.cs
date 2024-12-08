@@ -1,4 +1,6 @@
-﻿namespace BabyCradle.Models
+﻿using System.Text.Json.Serialization;
+
+namespace BabyCradle.Models
 {
     public  class NotificationItem
     {
@@ -11,6 +13,8 @@
 
         [ForeignKey("Child")]
         public int ChildId { get; set; }
+
+        [JsonIgnore]
         public Child? Child { get; set; }
     }
 
