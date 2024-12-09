@@ -61,6 +61,8 @@
             builder.Services.AddScoped<VaccinationService>();
             builder.Services.AddScoped<IVaccinationRepository,VaccinationRepository>();
             builder.Services.AddScoped<SendNotificationService>();
+            builder.Services.AddScoped<IMedicineRepository,MedicineRepository>();
+            builder.Services.AddScoped<IFeedingRepository,FeedingRepository>();
             //builder.Services.AddHostedService<NotificationService>();
             builder.Services.AddHttpContextAccessor();
 

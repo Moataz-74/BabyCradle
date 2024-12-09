@@ -36,7 +36,7 @@
 
         public DbSet<Breathing> Breathing_readings { get; set; }
         public DbSet<Child> Children { get; set; }
-        public DbSet<Feeding> Feeding { get; set; }
+        public DbSet<Feeding> Feedings { get; set; }
         public DbSet<Heart> Heart_readings { get; set; }
         public DbSet<Medicine> Medicines { get; set; }
         public DbSet<spO2> spO2_readings { get; set; }
