@@ -30,7 +30,7 @@
             var duration = medicine.NotificationTime - DateTime.Now;
             medicine.NotificationTime = Time.ConvertTimeInEgyptToUTC(medicineDTO.NotificationTime);
             BackgroundJob.Schedule(() => notificationService.SendNotification(medicine), duration);
-            BackgroundJob.Schedule(() => RemoveMedicine(medicine.NotificationTime), duration);
+           
 
             await context.Medicines.AddAsync(medicine);
             await context.SaveChangesAsync();
@@ -42,6 +42,7 @@
             if (medicine != null)
             {
                 mapper.Map(medicineDTO, medicine);
+                medicine.Title = $"Remember the medicine time now :{medicineDTO.MedicineName}";
                 context.Medicines.Update(medicine);
                 await context.SaveChangesAsync();
             }
