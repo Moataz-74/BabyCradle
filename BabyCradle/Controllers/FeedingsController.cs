@@ -25,7 +25,7 @@
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Feeding>>> GetAllFeedings()
+        public async Task<ActionResult<IEnumerable<DisplayFeedingDTO>>> GetAllFeedings()
         {
             var feedings = await feedingRepository.GetAllFeedings();
             return feedings.ToList();

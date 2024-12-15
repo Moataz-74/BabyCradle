@@ -47,10 +47,21 @@
             }
         }
 
-        public async Task<IEnumerable<Feeding>> GetAllFeedings()
+        public async Task<IEnumerable<DisplayFeedingDTO>> GetAllFeedings()
         {
             var childId = presentUser.GetIdForPresentChild();
-            return await context.Feedings.AsNoTracking().Where(f => f.ChildId == childId).ToListAsync();
+           var feedings=  await context.Feedings.AsNoTracking().Where(f => f.ChildId == childId).ToListAsync();
+            // Initialize the DTO list without initial capacity  
+            var feedingsDTO = new List<DisplayFeedingDTO>();
+
+            // Avoiding using the index directly for mapping  
+            foreach (var f in feedings)
+            {
+                var dto = mapper.Map<DisplayFeedingDTO>(f); // Assuming you are using AutoMapper  
+                feedingsDTO.Add(dto); // Add the mapped DTO to the list  
+            }
+
+            return feedingsDTO;
         }
 
         public async Task<bool> FeedingExistsAsync(int id)

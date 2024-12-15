@@ -6,7 +6,7 @@
 
         Task AddFeeding(AddFeedingDTO feedingDTO);
 
-        Task<IEnumerable<Feeding>> GetAllFeedings();
+        Task<IEnumerable<DisplayFeedingDTO>> GetAllFeedings();
 
         Task EditFeeding(int id, EditFeedingDTO feedingDTO);
 

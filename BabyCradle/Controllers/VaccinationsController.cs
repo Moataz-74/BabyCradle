@@ -12,7 +12,7 @@
         }
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<Vaccination>> GetAllVaccinesForChild()
+        public async Task<ActionResult<DisplayVaccineDTO>> GetAllVaccinesForChild()
         {
           var vaccines =  await vaccinationRepository.GetAllVaccinesForChild();
 

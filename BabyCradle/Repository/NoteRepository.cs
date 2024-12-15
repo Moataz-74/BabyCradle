@@ -51,11 +51,22 @@
             }
         }
 
-        public async Task<IEnumerable<Note>> GetAllNotes()
+        public async Task<IEnumerable<DisplayNoteDTO>> GetAllNotes()
         {
             var childId = presentUser.GetIdForPresentChild();
-            var notes = await context.Notes.AsNoTracking().Where(n=>n.ChildId== childId).ToListAsync();
-            return notes;
+            var notes = await context.Notes.AsNoTracking().Where(n => n.ChildId == childId).ToListAsync();
+
+            // Initialize the DTO list without initial capacity  
+            var notesDTO = new List<DisplayNoteDTO>();
+
+            // Avoiding using the index directly for mapping  
+            foreach (var note in notes)
+            {
+                var dto = mapper.Map<DisplayNoteDTO>(note); // Assuming you are using AutoMapper  
+                notesDTO.Add(dto); // Add the mapped DTO to the list  
+            }
+
+            return notesDTO;
         }
         public async Task<bool> NoteExistsAsync(int id)
         {

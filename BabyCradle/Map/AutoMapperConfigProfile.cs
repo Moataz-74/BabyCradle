@@ -10,7 +10,10 @@
             CreateMap<EditMedicineDTO, Medicine>();
             CreateMap<AddFeedingDTO, Feeding>();
             CreateMap<EditFeedingDTO, Feeding>();
-
+            CreateMap<Note,DisplayNoteDTO>();
+            CreateMap<Medicine,DisplayMedicineDTO>();
+            CreateMap<Feeding,DisplayFeedingDTO>();
+            CreateMap<Vaccination,DisplayVaccineDTO>();
             CreateMap<AddChildDTO, Child>();
 
 

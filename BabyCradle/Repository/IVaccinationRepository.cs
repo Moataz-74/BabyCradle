@@ -2,6 +2,6 @@
 {
     public interface IVaccinationRepository
     {
-        public Task<IEnumerable<Vaccination>> GetAllVaccinesForChild();
+        public Task<IEnumerable<DisplayVaccineDTO>> GetAllVaccinesForChild();
     }
 }

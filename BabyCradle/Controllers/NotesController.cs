@@ -29,7 +29,7 @@
 
         [Authorize,HttpGet]
         
-        public async Task<ActionResult<IEnumerable<Note>>> GetAllNotes()
+        public async Task<ActionResult<IEnumerable<DisplayNoteDTO>>> GetAllNotes()
         {
             var notes = await noteRepository.GetAllNotes();
             return notes.ToList();

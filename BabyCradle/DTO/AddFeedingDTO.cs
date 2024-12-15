@@ -2,6 +2,7 @@
 {
     public class AddFeedingDTO
     {
+     
         public string? Content { get; set; }    
 
         [FutureDate]
