@@ -25,7 +25,7 @@
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Medicine>>> GetAllMedicines()
+        public async Task<ActionResult<IEnumerable<DisplayMedicineDTO>>> GetAllMedicines()
         {
             var medicines = await medicineRepository.GetAllMedicines();
             return medicines.ToList();

@@ -6,7 +6,7 @@
 
         Task AddMedicine(AddMedicineDTO medicineDTO);
 
-        Task<IEnumerable<Medicine>> GetAllMedicines();
+        Task<IEnumerable<DisplayMedicineDTO>> GetAllMedicines();
 
         Task EditMedicine(int id, EditMedicineDTO medicineDTO);
 

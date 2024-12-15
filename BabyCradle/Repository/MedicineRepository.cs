@@ -48,10 +48,17 @@
             }
         }
 
-        public async Task<IEnumerable<Medicine>> GetAllMedicines()
+        public async Task<IEnumerable<DisplayMedicineDTO>> GetAllMedicines()
         {
             var childId = presentUser.GetIdForPresentChild();
-            return await context.Medicines.AsNoTracking().Where(m => m.ChildId == childId).ToListAsync();
+            var medicines =  await context.Medicines.AsNoTracking().Where(m => m.ChildId == childId).ToListAsync();
+            var medicinesDTO = new List<DisplayMedicineDTO>();
+            foreach (var medicne in medicines)
+            {
+                var medicneDTO = mapper.Map<DisplayMedicineDTO>(medicne);
+                medicinesDTO.Add(medicneDTO);
+            }
+            return medicinesDTO;
         }
 
         public async Task<bool> MedicineExistsAsync(int id)
